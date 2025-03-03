@@ -36,14 +36,158 @@ export function activate(context: vscode.ExtensionContext) {
 	// // const disposableToMd = vscode.commands.registerCommand('polyglot-nb-to-markdown.ConvertToMarkdown', convertToMarkdown);
 	// const disposableConvertCurrentToMd = vscode.commands.registerCommand('polyglot-nb-to-markdown.ConvertToMarkdown', convertAllNoteBooksOpenedToMarkdown);
 	const disposableConvertAllOpenedToMd = vscode.commands.registerCommand('polyglot-nb-to-markdown.ConvertAllNoteBooksOpenedToMarkdown', convertAllNoteBooksOpenedToMarkdown);
+	const disposableConvertMdOpenedCurrentToNoteBook = vscode.commands.registerCommand('polyglot-nb-to-markdown.ConvertCurrentMarkDownToNoteBook', ConvertMdOpenedCurrentToNoteBook);
 	// const disposableConvertOpenedCurrentToMd = vscode.commands.registerCommand('polyglot-nb-to-markdown.ConvertNoteBookCurrentOpenedToMarkdown', convertAllNoteBooksOpenedToMarkdown);
 
 
 	// context.subscriptions.push(disposable);
 	// context.subscriptions.push(disposableConvertCurrentToMd);
 	context.subscriptions.push(disposableConvertAllOpenedToMd);
+	context.subscriptions.push(disposableConvertMdOpenedCurrentToNoteBook);
 	// context.subscriptions.push(disposableConvertOpenedCurrentToMd);
 }
+
+
+
+async function ConvertMdOpenedCurrentToNoteBook(filePath: any) {
+	// try get the current opened markdown file
+	let editor = vscode.window.activeTextEditor;
+	if (!editor) {
+		console.log('No active editor');
+		return;
+	}
+
+
+	let doc = editor.document;
+	let content = doc.getText();
+	filePath = doc.uri.fsPath;
+	let dirName = path.dirname(doc.uri.fsPath);
+	let fileName = path.basename(doc.uri.fsPath);
+	let newFileName = fileName.replace(mdFileExtension, nbFileExtension);
+	let newFilePath = path.join(dirName, newFileName);
+
+	let nbContent = await ConvertMdContentToNb(content);
+
+
+	console.log(`Convert ${filePath} to ${newFilePath}`);
+	// await fs.writeFileSync(newFilePath, content);
+	await fs.writeFileSync(newFilePath, nbContent);
+}
+
+
+// filepath: /D:/Work/Others/VSCode/Plugins/Polyglot2MarkDown/polyglot-nb-to-markdown/src/extension.ts
+async function ConvertMdContentToNb(mdContent: string): Promise<string> {
+    // 创建notebook对象结构
+    const notebook: Notebook = {
+        cells: [],
+        metadata: {
+            kernelspec: {
+                display_name: "Polyglot Notebook",
+                language: "polyglot-notebook",
+                name: "polyglot-notebook"
+            },
+            language_info: {
+                name: "polyglot-notebook",
+                version: "1.0"
+            },
+            polyglot_notebook: {
+                kernelInfo: {
+                    defaultKernelName: "polyglot-notebook",
+                    items: [
+                        {
+                            aliases: [],
+                            name: "polyglot-notebook"
+                        }
+                    ]
+                }
+            }
+        },
+        nbformat: 4,
+        nbformat_minor: 5
+    };
+
+    // 按行分割Markdown内容
+    const lines = mdContent.split('\n');
+    
+    let inCodeBlock = false;
+    let currentLanguage = '';
+    let currentCell: NotebookCell | null = null;
+    let currentContent: string[] = [];
+
+    // 逐行解析Markdown内容
+    for (let i = 0; i < lines.length; i++) {
+        const line = lines[i];
+        
+        // 检测代码块开始/结束
+        if (line.startsWith(mdCodeBlockFlag)) {
+            if (!inCodeBlock) {
+                // 如果有累积的Markdown内容，先保存为一个cell
+                if (currentContent.length > 0) {
+                    notebook.cells.push({
+                        cell_type: cell_typeMarkdown,
+                        metadata: {},
+                        source: currentContent.map(line => line + '\n')
+                    });
+                    currentContent = [];
+                }
+                
+                // 获取代码块的语言
+                currentLanguage = line.substring(mdCodeBlockFlag.length).trim();
+                inCodeBlock = true;
+                
+                // 创建新的代码cell
+                currentCell = {
+                    cell_type: cell_typeCode,
+                    metadata: {
+                        dotnet_interactive: {
+                            language: currentLanguage
+                        },
+                        polyglot_notebook: {
+                            kernelName: currentLanguage
+                        }
+                    },
+                    source: [],
+                    execution_count: null,
+                    outputs: []
+                };
+            } else {
+                // 代码块结束
+                inCodeBlock = false;
+                if (currentCell) {
+                    notebook.cells.push(currentCell);
+                    currentCell = null;
+                }
+            }
+        } else {
+            // 处理普通内容行
+            if (inCodeBlock) {
+                // 如果在代码块内，添加到当前代码cell
+                if (currentCell) {
+                    currentCell.source.push(line + '\n');
+                }
+            } else {
+                // 普通Markdown内容
+                currentContent.push(line);
+            }
+        }
+    }
+
+    // 处理最后一个cell
+    if (currentCell) {
+        notebook.cells.push(currentCell);
+    } else if (currentContent.length > 0) {
+        notebook.cells.push({
+            cell_type: cell_typeMarkdown,
+            metadata: {},
+            source: currentContent.map(line => line + '\n')
+        });
+    }
+
+    // 将notebook对象转换为JSON字符串
+    return JSON.stringify(notebook, null, 2);
+}
+
+
 
 // save the .ipynb files opened   as  markdown to new  files 
 async function convertAllNoteBooksOpenedToMarkdown(filePath: any) {
