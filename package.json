@@ -19,8 +19,8 @@
         "title": "Hello World"
       },
       {
-        "command": "polyglot-nb-to-markdown.ConvertToMarkdown",
-        "title": "Convert to Markdown"
+        "command": "polyglot-nb-to-markdown.ConvertAllNoteBooksOpenedToMarkdown",
+        "title": "Convert all noteBooks opened to markdown"
       }
     ]
   },
