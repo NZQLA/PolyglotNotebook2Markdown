@@ -1,7 +1,7 @@
 {
-  "name": "polyglot-nb-to-markdown",
-  "displayName": "Polyglot notebooks to Markdown",
-  "description": "Convert the notebooks(.ipynb) to markdown .",
+  "name": "polyglot-2-markdown",
+  "displayName": "Polyglot 2 MarkDown",
+  "description": "Want to convert your Jupyter Notebooks between  Markdown files? This extension is for you!",
   "version": "0.0.3",
   "publisher": "FreshWind",
   "repository": "https://github.com/NZQLA/PolyglotNotebook2Markdown",
@@ -17,15 +17,15 @@
   "contributes": {
     "commands": [
       {
-        "command": "polyglot-nb-to-markdown.helloWorld",
+        "command": "polyglot-2-markdown.helloWorld",
         "title": "Hello World"
       },
       {
-        "command": "polyglot-nb-to-markdown.ConvertAllNoteBooksOpenedToMarkdown",
+        "command": "polyglot-2-markdown.ConvertAllNoteBooksOpenedToMarkdown",
         "title": "Convert all noteBooks opened to markdown"
       },
       {
-        "command": "polyglot-nb-to-markdown.ConvertCurrentMarkDownToNoteBook",
+        "command": "polyglot-2-markdown.ConvertCurrentMarkDownToNoteBook",
         "title": "Convert current markdown to notebook"
       }
 

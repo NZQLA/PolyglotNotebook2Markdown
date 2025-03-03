@@ -22,22 +22,22 @@ export function activate(context: vscode.ExtensionContext) {
 
 	// Use the console to output diagnostic information (console.log) and errors (console.error)
 	// This line of code will only be executed once when your extension is activated
-	console.log('Hello , polyglot-nb-to-markdown is Ready!');
+	console.log('Hello , polyglot-2-markdown is Ready!');
 
 	// // The command has been defined in the package.json file
 	// // Now provide the implementation of the command with registerCommand
 	// // The commandId parameter must match the command field in package.json
-	// const disposable = vscode.commands.registerCommand('polyglot-nb-to-markdown.helloWorld', () => {
+	// const disposable = vscode.commands.registerCommand('polyglot-2-markdown.helloWorld', () => {
 	// 	// The code you place here will be executed every time your command is executed
 	// 	// Display a message box to the user
-	// 	vscode.window.showInformationMessage('Hello , polyglot-nb-to-markdown is Ready!');
+	// 	vscode.window.showInformationMessage('Hello , polyglot-2-markdown is Ready!');
 	// });
 
-	// // const disposableToMd = vscode.commands.registerCommand('polyglot-nb-to-markdown.ConvertToMarkdown', convertToMarkdown);
-	// const disposableConvertCurrentToMd = vscode.commands.registerCommand('polyglot-nb-to-markdown.ConvertToMarkdown', convertAllNoteBooksOpenedToMarkdown);
-	const disposableConvertAllOpenedToMd = vscode.commands.registerCommand('polyglot-nb-to-markdown.ConvertAllNoteBooksOpenedToMarkdown', convertAllNoteBooksOpenedToMarkdown);
-	const disposableConvertMdOpenedCurrentToNoteBook = vscode.commands.registerCommand('polyglot-nb-to-markdown.ConvertCurrentMarkDownToNoteBook', ConvertMdOpenedCurrentToNoteBook);
-	// const disposableConvertOpenedCurrentToMd = vscode.commands.registerCommand('polyglot-nb-to-markdown.ConvertNoteBookCurrentOpenedToMarkdown', convertAllNoteBooksOpenedToMarkdown);
+	// // const disposableToMd = vscode.commands.registerCommand('polyglot-2-markdown.ConvertToMarkdown', convertToMarkdown);
+	// const disposableConvertCurrentToMd = vscode.commands.registerCommand('polyglot-2-markdown.ConvertToMarkdown', convertAllNoteBooksOpenedToMarkdown);
+	const disposableConvertAllOpenedToMd = vscode.commands.registerCommand('polyglot-2-markdown.ConvertAllNoteBooksOpenedToMarkdown', convertAllNoteBooksOpenedToMarkdown);
+	const disposableConvertMdOpenedCurrentToNoteBook = vscode.commands.registerCommand('polyglot-2-markdown.ConvertCurrentMarkDownToNoteBook', ConvertMdOpenedCurrentToNoteBook);
+	// const disposableConvertOpenedCurrentToMd = vscode.commands.registerCommand('polyglot-2-markdown.ConvertNoteBookCurrentOpenedToMarkdown', convertAllNoteBooksOpenedToMarkdown);
 
 
 	// context.subscriptions.push(disposable);
@@ -75,7 +75,7 @@ async function ConvertMdOpenedCurrentToNoteBook(filePath: any) {
 }
 
 
-// filepath: /D:/Work/Others/VSCode/Plugins/Polyglot2MarkDown/polyglot-nb-to-markdown/src/extension.ts
+// filepath: /D:/Work/Others/VSCode/Plugins/Polyglot2MarkDown/polyglot-2-markdown/src/extension.ts
 async function ConvertMdContentToNb(mdContent: string): Promise<string> {
     // 创建notebook对象结构
     const notebook: Notebook = {
@@ -407,7 +407,7 @@ interface Notebook {
 //   "explorer/context": [
 //     {
 //       "when": "resourceExtname == .ipynb",
-//       "command": "polyglot-nb-to-markdown.ConvertToMarkdown"
+//       "command": "polyglot-2-markdown.ConvertToMarkdown"
 //     }
 //   ]
 // }
