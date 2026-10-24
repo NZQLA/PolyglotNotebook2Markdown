@@ -2,10 +2,10 @@
   "name": "polyglot-2-markdown",
   "displayName": "Polyglot 2 MarkDown",
   "description": "Want to convert your Jupyter Notebooks between  Markdown files? This extension is for you!",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "publisher": "FreshWind",
   "repository": "https://github.com/NZQLA/PolyglotNotebook2Markdown",
-  "icon": "PolyglotToMdIcon.png",
+  "icon": "Polyglot2MdIcon.png",
   "engines": {
     "vscode": "^1.97.0"
   },
@@ -28,7 +28,6 @@
         "command": "polyglot-2-markdown.ConvertCurrentMarkDownToNoteBook",
         "title": "Convert current markdown to notebook"
       }
-
     ]
   },
   "scripts": {
@@ -45,7 +44,7 @@
     "@types/vscode": "^1.97.0",
     "@typescript-eslint/eslint-plugin": "^8.22.0",
     "@typescript-eslint/parser": "^8.22.0",
-    "@vscode/test-cli": "^0.0.10",
+    "@vscode/test-cli": "^0.0.15",
     "@vscode/test-electron": "^2.4.1",
     "eslint": "^9.19.0",
     "typescript": "^5.7.3"
